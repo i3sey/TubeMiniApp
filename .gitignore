@@ -57,3 +57,9 @@ docker-compose.override.yml
 # Logs
 logs/
 *.log
+
+# SSL Certificates (SECURITY: Never commit private keys!)
+nginx/ssl/*.pem
+nginx/ssl/*.key
+nginx/ssl/*.crt
+nginx/ssl/*.cert
