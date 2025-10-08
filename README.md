@@ -175,3 +175,66 @@ docker-compose up -d --build
 - **API** - ASP.NET Core приложение
 - **Frontend** - React SPA с nginx
 - **Nginx** - reverse proxy с SSL termination
+
+## Переход с InMemory на SQL Server
+
+По умолчанию приложение использует InMemory базу данных для демонстрации. Для продакшена рекомендуется перейти на SQL Server.
+
+### Шаги для перехода:
+
+1. **Обновите Program.cs:**
+```csharp
+// Замените строку в TubeMiniApp.API/Program.cs
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+```
+
+2. **Добавьте строку подключения в appsettings.json:**
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=TubeMiniAppDb;Trusted_Connection=true;"
+  },
+  "Logging": {
+    // ...existing config...
+  }
+}
+```
+
+3. **Создайте и примените миграции:**
+```bash
+cd TubeMiniApp.API
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+```
+
+4. **Для Docker с SQL Server добавьте в docker-compose.yml:**
+```yaml
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "YourPassword123!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+
+  api:
+    # ...existing config...
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=TubeMiniAppDb;User Id=sa;Password=YourPassword123!;TrustServerCertificate=true;
+    depends_on:
+      - sqlserver
+
+volumes:
+  sqlserver_data:
+```
+
+### Преимущества SQL Server:
+- ✅ Данные сохраняются после перезапуска
+- ✅ Поддержка транзакций и целостности данных
+- ✅ Лучшая производительность для больших объемов
+- ✅ Готовность к продакшену
+
