@@ -4,6 +4,7 @@ import ProductCard from './ProductCard';
 
 interface ProductListProps {
   products: Product[];
+  totalCount: number;
   onAddToCart: (productId: number, quantityMeters?: number, quantityTons?: number) => void;
   onShowFilters: () => void;
   loading: boolean;
@@ -11,6 +12,7 @@ interface ProductListProps {
 
 const ProductList: React.FC<ProductListProps> = ({
   products,
+  totalCount,
   onAddToCart,
   onShowFilters,
   loading,
@@ -73,7 +75,7 @@ const ProductList: React.FC<ProductListProps> = ({
 
       {!loading && filteredProducts.length > 0 && (
         <div className="results-info">
-          Найдено: {filteredProducts.length} товаров
+          Найдено: {totalCount} товаров (показано {filteredProducts.length})
         </div>
       )}
     </div>

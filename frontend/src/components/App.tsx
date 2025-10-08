@@ -13,6 +13,7 @@ const App: React.FC = () => {
   // Состояние приложения
   const [currentScreen, setCurrentScreen] = useState<Screen>('catalog');
   const [products, setProducts] = useState<Product[]>([]);
+  const [totalProductsCount, setTotalProductsCount] = useState(0);
   const [cart, setCart] = useState<Cart | null>(null);
   const [loading, setLoading] = useState(false);
   const [profileLoading, setProfileLoading] = useState(false);
@@ -26,7 +27,7 @@ const App: React.FC = () => {
   // Фильтры
   const [filters, setFilters] = useState<ProductFilter>({
     pageNumber: 1,
-    pageSize: 10,
+    pageSize: 50,
   });
   
   const [filterOptions, setFilterOptions] = useState<{
@@ -165,6 +166,7 @@ const App: React.FC = () => {
         console.log('✅ API response received:', response);
       }
       setProducts(response.data);
+      setTotalProductsCount(response.totalCount);
       
       if (newFilters) {
         setFilters(newFilters);
@@ -435,6 +437,7 @@ const App: React.FC = () => {
       {currentScreen === 'catalog' && (
         <ProductList
           products={products}
+          totalCount={totalProductsCount}
           onAddToCart={handleAddToCart}
           onShowFilters={() => setShowFilters(true)}
           loading={loading}
