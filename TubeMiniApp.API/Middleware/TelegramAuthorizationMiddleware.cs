@@ -15,7 +15,8 @@ public class TelegramAuthorizationMiddleware
     {
         "/api/health",
         "/api/healthz",
-        "/api/healthcheck"
+        "/api/healthcheck",
+        "/api/telegram/webhook"  // Вебхук от Telegram
     };
 
     public TelegramAuthorizationMiddleware(
