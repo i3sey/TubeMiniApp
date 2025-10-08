@@ -31,6 +31,13 @@ public class TelegramAuthorizationMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
+        // Разрешить доступ к Swagger
+        if (context.Request.Path.StartsWithSegments("/swagger", StringComparison.OrdinalIgnoreCase))
+        {
+            await _next(context);
+            return;
+        }
+
         if (!context.Request.Path.StartsWithSegments("/api", StringComparison.OrdinalIgnoreCase))
         {
             await _next(context);
