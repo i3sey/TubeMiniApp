@@ -1,0 +1,274 @@
+/* Специальные стили для Telegram Mini App */
+
+/* Поддержка тем Telegram */
+body {
+  background-color: var(--tg-theme-bg-color, #ffffff);
+  color: var(--tg-theme-text-color, #333333);
+}
+
+/* Адаптация под Telegram темы */
+:root {
+  /* Светлая тема */
+  --tg-color-scheme: light;
+}
+
+[data-tg-theme="dark"] {
+  /* Темная тема */
+  --tg-color-scheme: dark;
+  --primary-color: #ec6608;
+  --primary-text: var(--tg-theme-button-text-color, #ffffff);
+  --bg-color: var(--tg-theme-bg-color, #212121);
+  --text-color: var(--tg-theme-text-color, #ffffff);
+  --hint-color: var(--tg-theme-hint-color, #a8a8a8);
+  --link-color: var(--tg-theme-link-color, #5288c1);
+  --secondary-bg: var(--tg-theme-secondary-bg-color, #181818);
+  --border-color: #3a3a3a;
+}
+
+/* Убираем скроллбары для более нативного вида */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+/* Увеличиваем области касания для мобильных устройств */
+.button,
+.nav-item,
+.close-button,
+.remove-button,
+.tab {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Адаптация для iOS Safe Area */
+@supports (padding: max(0px)) {
+  .page {
+    padding-left: max(var(--spacing-md), env(safe-area-inset-left));
+    padding-right: max(var(--spacing-md), env(safe-area-inset-right));
+  }
+  
+  .bottom-nav {
+    padding-bottom: max(var(--spacing-sm), env(safe-area-inset-bottom));
+  }
+}
+
+/* Убираем выделение текста для интерактивных элементов */
+.button,
+.nav-item,
+.product-card,
+.tab,
+.close-button {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Улучшенная анимация нажатий */
+.button:active,
+.nav-item:active,
+.tab:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
+}
+
+/* Стили для статус-бара на iOS */
+.status-bar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: env(safe-area-inset-top);
+  background-color: var(--bg-color);
+  z-index: 9999;
+}
+
+/* Telegram WebApp специфичные стили */
+.tg-web-app {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Haptic feedback эффекты */
+@media (pointer: coarse) {
+  .button:active {
+    background-color: color-mix(in srgb, var(--primary-color) 90%, black);
+  }
+  
+  .button-secondary:active {
+    background-color: color-mix(in srgb, var(--secondary-bg) 90%, black);
+  }
+}
+
+/* Улучшения для темной темы */
+[data-tg-theme="dark"] .card {
+  background: var(--secondary-bg);
+  border-color: #3a3a3a;
+}
+
+[data-tg-theme="dark"] .input {
+  background-color: var(--secondary-bg);
+  border-color: #3a3a3a;
+  color: var(--text-color);
+}
+
+[data-tg-theme="dark"] .input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(82, 136, 193, 0.2);
+}
+
+[data-tg-theme="dark"] .modal-overlay {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+[data-tg-theme="dark"] .empty-state {
+  color: var(--hint-color);
+}
+
+[data-tg-theme="dark"] .empty-state h3 {
+  color: var(--text-color);
+}
+
+/* Responsive для малых экранов */
+@media (max-width: 360px) {
+  .page {
+    padding: var(--spacing-xs);
+    padding-bottom: 80px;
+  }
+  
+  .card {
+    padding: var(--spacing-xs);
+  }
+  
+  .product-details {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xs);
+  }
+  
+  .cart-item-details {
+    grid-template-columns: 1fr;
+  }
+  
+  .order-item {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xs);
+    text-align: left;
+  }
+  
+  .range-inputs {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+  
+  .form-actions,
+  .edit-actions {
+    flex-direction: column;
+  }
+  
+  .measurement-tabs {
+    flex-direction: column;
+  }
+  
+  .tab {
+    text-align: center;
+  }
+}
+
+/* Ландшафтная ориентация */
+@media (orientation: landscape) and (max-height: 500px) {
+  .page {
+    padding-bottom: 60px;
+  }
+  
+  .bottom-nav {
+    padding: var(--spacing-xs) 0;
+  }
+  
+  .nav-item {
+    padding: var(--spacing-xs);
+  }
+  
+  .nav-item-text {
+    display: none;
+  }
+  
+  .nav-item-icon {
+    font-size: 18px;
+  }
+}
+
+/* Анимации появления */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.page {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+  animation: slideUp 0.3s ease-out;
+}
+
+.product-card,
+.cart-item {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Состояния загрузки */
+.loading .button {
+  position: relative;
+  color: transparent;
+}
+
+.loading .button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* PWA support */
+@media (display-mode: standalone) {
+  .page {
+    padding-top: calc(var(--spacing-md) + env(safe-area-inset-top));
+  }
+}
+
+/* Улучшения доступности */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .spinner {
+    border-width: 2px;
+  }
+}
+
+/* Vibration support for haptic feedback */
+/* haptic placeholders intentionally removed to avoid empty rulesets */
